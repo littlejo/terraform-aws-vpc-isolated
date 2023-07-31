@@ -13,11 +13,16 @@ resource "aws_vpc" "this" {
   tags = merge(var.global_tags, var.vpc_tags, { Name = var.name })
 }
 
-resource "aws_subnet" "this" {
-  for_each = var.subnets
-
-  cidr_block        = each.value.cidr_block
-  availability_zone = each.value.az == null ? "${local.region}${element(split("_", each.key), length(split("_", each.key)) - 1)}" : each.value.az
-  vpc_id            = aws_vpc.this.id
-  tags              = merge(var.global_tags, var.subnets_tags, each.value.tags, { Name = each.value.name })
+module "subnets" {
+  source             = "./modules/subnet"
+  vpc_id             = aws_vpc.this.id
+  for_each           = var.subnets
+  name               = each.value.name
+  cidr_block         = each.value.cidr_block
+  availability_zone  = each.value.az == null ? "${local.region}${element(split("_", each.key), length(split("_", each.key)) - 1)}" : each.value.az
+  tags               = each.value.tags
+  create_route_table = each.value.create_route_table
+  route_table_name   = each.value.route_table_name
+  route_table_tags   = each.value.route_table_tags
+  global_tags        = var.global_tags
 }

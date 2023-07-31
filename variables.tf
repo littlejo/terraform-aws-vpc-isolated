@@ -40,20 +40,17 @@ variable "global_tags" {
 }
 
 variable "subnets" {
-  description = "Map of subnets feature. If you don't mention az, it's the last character the key map, more information in example"
+  description = "Object of subnets feature. If you don't mention az, it's the last character the key map, more information in example"
   type = map(object(
     {
-      name       = string
-      cidr_block = string
-      az         = optional(string)
-      tags       = optional(map(string))
+      name               = string
+      cidr_block         = string
+      az                 = optional(string)
+      tags               = optional(map(string), {})
+      create_route_table = optional(bool, true)
+      route_table_name   = optional(string, "")
+      route_table_tags   = optional(map(string), {})
     })
   )
   default = {}
-}
-
-variable "subnets_tags" {
-  description = "A map of tags to assign to all subnets."
-  type        = map(string)
-  default     = {}
 }
