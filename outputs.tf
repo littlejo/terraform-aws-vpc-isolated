@@ -9,3 +9,7 @@ output "subnet_ids" {
 output "route_table_ids" {
   value = compact([for m in module.subnets : m.route_table_id])
 }
+
+output "summary" {
+  value = [for m in module.subnets : m.summary]
+}
