@@ -54,3 +54,17 @@ variable "subnets" {
   )
   default = {}
 }
+
+variable "security_groups" {
+  description = "Feature of security groups"
+  type = map(object(
+    {
+      name        = string
+      description = optional(string, "A sg")
+      ingress     = list(any)
+      egress      = optional(list(any))
+      tags        = optional(map(string), {})
+    })
+  )
+  default = {}
+}

@@ -26,3 +26,16 @@ module "subnets" {
   route_table_tags   = each.value.route_table_tags
   global_tags        = var.global_tags
 }
+
+module "security_groups" {
+  source  = "littlejo/security-group/aws"
+  version = "0.1.0"
+  vpc_id  = aws_vpc.this.id
+
+  for_each    = var.security_groups
+  name        = each.value.name
+  description = each.value.description
+  ingress     = each.value.ingress
+  egress      = each.value.egress
+  tags        = each.value.tags
+}

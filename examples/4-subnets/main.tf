@@ -21,4 +21,18 @@ module "vpc" {
       cidr_block = "10.0.3.0/24"
     }
   }
+
+  security_groups = {
+    test = {
+      name        = "test"
+      description = "test"
+      ingress = [
+        {
+          description = "ssh"
+          port        = 22
+          cidr_blocks = ["0.0.0.0/0"]
+        }
+      ]
+    }
+  }
 }
