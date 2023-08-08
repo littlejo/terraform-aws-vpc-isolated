@@ -61,7 +61,7 @@ variable "security_groups" {
     {
       name        = string
       description = optional(string, "A sg")
-      ingress = list(object({
+      ingress = optional(list(object({
         description      = optional(string, "")
         port             = optional(number)
         from_port        = optional(number)
@@ -74,9 +74,22 @@ variable "security_groups" {
         security_groups  = optional(list(string), [])
         }
         )
-      )
-      egress = optional(list(any))
-      tags   = optional(map(string), {})
+      ), [])
+      egress = optional(list(object({
+        description      = optional(string, "")
+        port             = optional(number)
+        from_port        = optional(number)
+        to_port          = optional(number)
+        protocol         = optional(string, "tcp")
+        cidr_blocks      = optional(list(string), [])
+        ipv6_cidr_blocks = optional(list(string), [])
+        prefix_list_ids  = optional(list(string), [])
+        self             = optional(bool, false)
+        security_groups  = optional(list(string), [])
+        }
+        )
+      ), [])
+      tags = optional(map(string), {})
     })
   )
   default = {}
