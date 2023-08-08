@@ -29,7 +29,7 @@ module "subnets" {
 
 module "security_groups" {
   source  = "littlejo/security-group/aws"
-  version = "0.1.1"
+  version = "0.2.0"
   vpc_id  = aws_vpc.this.id
 
   for_each    = var.security_groups
